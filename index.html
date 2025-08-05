@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ライフスター株式会社</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* ヘッダーのフィードインアニメーション用CSS */
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+        will-change: transform;
+      }
+      .site-header.header-hidden {
+        transform: translateY(-100%);
+        box-shadow: none;
+      }
+      .site-header.header-visible {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        animation: headerFeedIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      @keyframes headerFeedIn {
+        from {
+          transform: translateY(-100%);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+      /* 縦長カード用追加CSS */
+      .vertical-card-section {
+        padding: 3rem 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+      .vertical-card {
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        width: 320px;
+        height: 520px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        animation: fadeUp 0.8s ease forwards;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      .vertical-card:nth-child(1) {
+        animation-delay: 1s;
+      }
+      .vertical-card:nth-child(2) {
+        animation-delay: 1.2s;
+      }
+      .vertical-card:nth-child(3) {
+        animation-delay: 1.4s;
+      }
+      .vertical-card img {
+        width: 100%;
+        height: 260px;
+        object-fit: cover;
+        display: block;
+      }
+      .vertical-card-content {
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: 100%;
+      }
+      .vertical-card-content h3 {
+        margin-bottom: 1rem;
+        font-size: 1.4rem;
+        color: #005bac;
+        text-align: center;
+      }
+      .vertical-card-content p {
+        font-size: 1rem;
+        color: #333;
+        text-align: center;
+      }
+      /* ブログ・コラムカード用CSS */
+      .blog-section {
+        padding: 3rem 0;
+        background: #f8fafc;
+      }
+      .blog-title {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: #005bac;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+      .blog-card-list {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .blog-card {
+        width: 340px;
+        height: 300px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: box-shadow 0.2s;
+      }
+      .blog-card:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+      }
+      .blog-card-image-area {
+        width: 100%;
+        height: 180px;
+        overflow: hidden;
+        position: relative;
+      }
+      .blog-card-image-area img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: block;
+      }
+      .blog-card:hover .blog-card-image-area img {
+        transform: scale(1.08);
+      }
+      .blog-card-content {
+        height: 120px;
+        padding: 0 1.2rem;
+        background: #fff;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+      .blog-card-meta {
+        display: flex;
+        align-items: center;
+        height: 30px;
+        margin-top: 0.8rem;
+        margin-bottom: 0.3rem;
+        gap: 0.7rem;
+      }
+      .blog-card-tag {
+        display: inline-block;
+        background: #e3f0fc;
+        color: #005bac;
+        font-size: 0.95rem;
+        border-radius: 12px;
+        padding: 0.2em 1em;
+        font-weight: 600;
+        margin-right: 0.5em;
+      }
+      .blog-card-date {
+        font-size: 0.92rem;
+        color: #888;
+      }
+      .blog-card-desc {
+        font-size: 1rem;
+        color: #333;
+        line-height: 1.5;
+        margin-top: 0.2rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+      }
+      @media (max-width: 1100px) {
+        .vertical-card-section {
+          gap: 1rem;
+        }
+        .vertical-card {
+          width: 30vw;
+          min-width: 260px;
+          max-width: 320px;
+        }
+        .blog-card-list {
+          gap: 1rem;
+        }
+        .blog-card {
+          width: 90vw;
+          max-width: 340px;
+        }
+      }
+      @media (max-width: 900px) {
+        .vertical-card-section {
+          flex-wrap: wrap;
+        }
+        .vertical-card {
+          width: 90vw;
+          max-width: 400px;
+          height: 400px;
+          margin-bottom: 1.5rem;
+        }
+        .vertical-card img {
+          height: 160px;
+        }
+      }
+      @media (max-width: 700px) {
+        .blog-card-list {
+          flex-direction: column;
+          align-items: center;
+        }
+        .blog-card {
+          width: 95vw;
+          max-width: 340px;
+        }
+      }
+      @media (max-width: 600px) {
+        .vertical-card-section {
+          flex-direction: column;
+          align-items: center;
+          gap: 1.5rem;
+        }
+        .vertical-card {
+          width: 90vw;
+          height: 400px;
+        }
+        .vertical-card img {
+          height: 160px;
+        }
+      }
+      @keyframes fadeUp {
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* --- 追加: 実績セクションの肌色背景とスタッフ紹介 --- */
+      .performance {
+        background: #fff5e5;
+        padding: 4rem 0 4rem 0;
+      }
+      .performance-inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .performance-text {
+        flex: 1 1 350px;
+        min-width: 320px;
+        max-width: 500px;
+      }
+      .performance-image {
+        flex: 1 1 320px;
+        min-width: 260px;
+        max-width: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .performance-image img {
+        width: 100%;
+        border-radius: 16px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      }
+      /* スタッフ紹介をperformance内で横並びに */
+      .performance-staff {
+        flex: 1 1 350px;
+        min-width: 320px;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 2.5rem;
+      }
+      .performance-staff h2 {
+        font-size: 1.5rem;
+        color: #005bac;
+        margin-bottom: 1.2rem;
+        font-weight: bold;
+      }
+      .staff-cards {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 1.2rem;
+      }
+      .staff-card img {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        background: #fff;
+      }
+      .staff-text h3 {
+        font-size: 1.1rem;
+        color: #e08a00;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+      .staff-text p {
+        font-size: 1rem;
+        color: #333;
+        margin-bottom: 0.7rem;
+      }
+      .btn-primary {
+        display: inline-block;
+        background: #005bac;
+        color: #fff;
+        padding: 0.7em 2em;
+        border-radius: 24px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1rem;
+        margin-top: 1rem;
+        transition: background 0.2s;
+      }
+      .btn-primary:hover {
+        background: #003e7e;
+      }
+      @media (max-width: 1100px) {
+        .performance-inner {
+          flex-direction: column;
+          align-items: center;
+        }
+        .performance-text,
+        .performance-image,
+        .performance-staff {
+          max-width: 700px;
+        }
+        .performance-staff {
+          margin-top: 2rem;
+        }
+      }
+      @media (max-width: 700px) {
+        .performance-inner {
+          flex-direction: column;
+          gap: 2rem;
+        }
+        .performance-text,
+        .performance-image,
+        .performance-staff {
+          min-width: 0;
+          max-width: 100%;
+        }
+        .staff-cards {
+          flex-direction: row;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header header-visible">
+      <div class="container">
+        <div class="logo">
+          <a href="/" class="shine-target">ライフスター株式会社</a>
+        </div>
+        <nav class="site-nav">
+          <ul>
+            <li>
+              <a href="#" class="nav-link">ライフプランから保険を考える</a>
+            </li>
+            <li><a href="#" class="nav-link">損害保険</a></li>
+            <li><a href="#" class="nav-link">相続相談</a></li>
+            <li><a href="#" class="nav-link">会社概要・アクセス</a></li>
+            <li><a href="#" class="nav-link">お問い合わせ</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <h1>お客様の人生に寄り添い<br />星のようにそっと照らし続け</h1>
+        <h2>道しるべの様になります</h2>
+        <h3>あなたの街の保険屋さん</h3>
+      </div>
+    </section>
+
+    <!-- 「あなたの街の保険屋さん」カード（3つ並列表示） -->
+    <section class="vertical-card-section">
+      <div class="vertical-card">
+        <img src="images/town-insurance.jpg" alt="あなたの街の保険屋さん" />
+        <div class="vertical-card-content">
+          <h3>あなたの街の保険屋さん</h3>
+          <p>
+            地域密着の保険ショップとして、<br />
+            あなたの暮らしに合った最適なプランをご提案します。<br />
+            ご相談は無料ですので、お気軽にご来店・お問い合わせください。
+          </p>
+        </div>
+      </div>
+      <div class="vertical-card">
+        <img src="images/town-insurance2.jpg" alt="地域の安心サポート" />
+        <div class="vertical-card-content">
+          <h3>地域の安心サポート</h3>
+          <p>
+            地元の皆さまに寄り添い、<br />
+            保険だけでなく生活全般のご相談も承ります。<br />
+            どんな小さなことでもお気軽にご相談ください。
+          </p>
+        </div>
+      </div>
+      <div class="vertical-card">
+        <img src="images/town-insurance3.jpg" alt="経験豊富なスタッフ" />
+        <div class="vertical-card-content">
+          <h3>経験豊富なスタッフ</h3>
+          <p>
+            経験豊富なスタッフが丁寧に対応。<br />
+            お客様一人ひとりに最適な保険選びをサポートします。<br />
+            アフターフォローも万全です。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ブログ・コラムエリア -->
+    <section class="blog-section">
+      <div class="container">
+        <div class="blog-title">ブログ・コラム</div>
+        <div class="blog-card-list">
+          <div class="blog-card">
+            <div class="blog-card-image-area">
+              <img src="images/blog1.jpg" alt="保険の見直しポイント" />
+            </div>
+            <div class="blog-card-content">
+              <div class="blog-card-meta">
+                <span class="blog-card-tag">保険</span>
+                <span class="blog-card-date">2024/06/01</span>
+              </div>
+              <div class="blog-card-desc">
+                保険の見直しタイミングやポイントを分かりやすく解説します。ライフステージに合わせた最適な選び方とは？
+              </div>
+            </div>
+          </div>
+          <div class="blog-card">
+            <div class="blog-card-image-area">
+              <img src="images/blog2.jpg" alt="相続の基礎知識" />
+            </div>
+            <div class="blog-card-content">
+              <div class="blog-card-meta">
+                <span class="blog-card-tag">相続</span>
+                <span class="blog-card-date">2024/05/20</span>
+              </div>
+              <div class="blog-card-desc">
+                相続の基本や注意点を解説。事前に知っておきたい手続きやトラブル回避のコツをご紹介します。
+              </div>
+            </div>
+          </div>
+          <div class="blog-card">
+            <div class="blog-card-image-area">
+              <img src="images/blog3.jpg" alt="地域イベントレポート" />
+            </div>
+            <div class="blog-card-content">
+              <div class="blog-card-meta">
+                <span class="blog-card-tag">地域活動</span>
+                <span class="blog-card-date">2024/05/10</span>
+              </div>
+              <div class="blog-card-desc">
+                地域で開催されたイベントの様子をレポート。地域密着の取り組みやスタッフの活動をご紹介します。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 実績＋スタッフ紹介セクション（肌色背景） -->
+    <section class="performance">
+      <div class="container performance-inner">
+        <div class="performance-text">
+          <h2>700世帯以上 2009年からの実績</h2>
+          <p>
+            保険の選択が難しくて、種類が多すぎて迷われることがあります。私たちはそれを理解し、わかりやすく説明し、あなたのライフスタイルに合った提案を心掛けています。相続相談や住宅ローン、ライフプラン、資産運用に関するアドバイスも行っています。
+          </p>
+          <p>
+            使ってみた時に思っていたと違っていたということもよくありますが、一緒に確認して、あなたやご家族のお役に立つ安心な内容を作りましょう。ご自身の資産を守るための情報提供も行っています。お気軽にご相談ください。
+          </p>
+          <a href="#" class="btn-primary">ごあいさつ</a>
+        </div>
+        <div class="performance-image">
+          <img src="images/performance.jpg" alt="実績イメージ" />
+        </div>
+        <div class="performance-staff">
+          <h2>スタッフ紹介</h2>
+          <div class="staff-cards">
+            <div class="staff-card">
+              <img src="images/staff1.png" alt="スタッフ1" />
+            </div>
+            <div class="staff-card">
+              <img src="images/staff2.png" alt="スタッフ2" />
+            </div>
+            <div class="staff-card">
+              <img src="images/staff3.png" alt="スタッフ3" />
+            </div>
+          </div>
+          <div class="staff-text">
+            <h3>しあわせのおてつだい</h3>
+            <p>
+              もっと輝いてほしいから、安心して暮らせる資産形成を一緒にしましょう。
+            </p>
+            <a href="#" class="btn-primary">詳しくはこちら</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- カードセクション（保険屋さんカード） -->
+    <section class="card-section">
+      <div class="container">
+        <div class="card town-card">
+          <img src="images/town-insurance.jpg" alt="あなたの街の保険屋さん" />
+          <div class="card-content">
+            <h3>あなたの街の保険屋さん</h3>
+            <p>
+              地域密着の保険ショップとして、あなたの暮らしに合った最適なプランをご提案します。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container">
+        <nav class="footer-nav">
+          <!-- フッターリンク省略 -->
+        </nav>
+        <div class="footer-info">
+          <p>ライフスター株式会社</p>
+          <p>〒670-0074 兵庫県姫路市御立西２丁目７−４</p>
+          <p>TEL : 0120-81-3515</p>
+        </div>
+        <div class="social">
+          <a href="#"><img src="images/facebook-icon.png" alt="Facebook" /></a>
+          <a href="#"
+            ><img src="images/instagram-icon.png" alt="Instagram"
+          /></a>
+        </div>
+        <div class="copyright">
+          <p>&copy; ライフスター株式会社</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // 定期的にロゴにキラッとアニメーションを付与
+      const shineTarget = document.querySelector(".shine-target");
+      setInterval(() => {
+        shineTarget.classList.add("shine-animate");
+        setTimeout(() => shineTarget.classList.remove("shine-animate"), 1000);
+      }, 5000);
+
+      // ヘッダーのフィードインアニメーション制御
+      let lastScrollY = window.scrollY;
+      let ticking = false;
+      const header = document.querySelector(".site-header");
+      let headerVisible = true;
+
+      function onScroll() {
+        const currentScrollY = window.scrollY;
+        if (currentScrollY > lastScrollY && currentScrollY > 80) {
+          // 下にスクロール→ヘッダー隠す
+          if (headerVisible) {
+            header.classList.remove("header-visible");
+            header.classList.add("header-hidden");
+            headerVisible = false;
+          }
+        } else {
+          // 上にスクロール→ヘッダー表示（フィードイン）
+          if (!headerVisible) {
+            header.classList.remove("header-hidden");
+            header.classList.add("header-visible");
+            headerVisible = true;
+          }
+        }
+        lastScrollY = currentScrollY;
+        ticking = false;
+      }
+
+      window.addEventListener("scroll", function () {
+        if (!ticking) {
+          window.requestAnimationFrame(onScroll);
+          ticking = true;
+        }
+      });
+    </script>
+  </body>
+</html>
