@@ -17,8 +17,7 @@ a {
   text-decoration: none;
 }
 .container {
-  width: 90%;
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -30,7 +29,6 @@ a {
   padding: 0.75rem 2rem;
   border-radius: 999px;
   font-weight: 700;
-  margin-top: 1rem;
 }
 
 /* ヘッダー */
@@ -111,13 +109,11 @@ a {
 /* 実績 */
 .performance {
   background: #fcf9ed;
-  padding: 4rem 0;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 .performance-inner {
   display: flex;
-  align-items: center;
-  gap: 2rem;
-  flex-wrap: wrap;
 }
 .performance-text {
   flex: 1 1 400px;
@@ -225,10 +221,80 @@ a {
 .social,
 .copyright {
   text-align: center;
-  margin-top: 1rem;
+  padding-top: 20px;
 }
 .social img {
   width: 24px;
   height: 24px;
   margin: 0 0.5rem;
+}
+
+.information {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  text-align: center;
+  font-family: "Noto Sans JP", sans-serif;
+  color: #333;
+}
+
+.information__icon {
+  margin-bottom: 16px;
+}
+
+.information__icon img {
+  width: 40px;
+  height: auto;
+}
+
+.information__title {
+  font-size: 32px;
+  margin-bottom: 40px;
+  line-height: 1.2;
+}
+
+.information__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px;
+}
+
+.information__item {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.information__item time {
+  flex: 0 0 120px;
+  font-weight: bold;
+  color: #333;
+}
+
+.information__item p {
+  flex: 1;
+  margin: 0;
+  text-align: left;
+  color: #666;
+  line-height: 1.5;
+}
+
+.information__more {
+  text-align: center;
+}
+
+.btn {
+  display: inline-block;
+  padding: 14px 48px;
+  background-color: #8eceda;
+  color: #fff;
+  border-radius: 40px;
+  text-decoration: none;
+  font-size: 18px;
+  transition: background-color 0.2s;
+}
+
+.btn:hover {
+  background-color: #7abccd;
 }

@@ -3,9 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ライフスター株式会社</title>
+    <title>株式会社ノバ</title>
     <link rel="stylesheet" href="style.css" />
     <style>
+      html,
+      body {
+        font-family: "ヒラギノ明朝 ProN", "Hiragino Mincho ProN", "游明朝",
+          "Yu Mincho", "MS P明朝", "MS PMincho", serif !important;
+      }
       /* ヘッダーのフィードインアニメーション用CSS */
       .site-header {
         position: sticky;
@@ -33,12 +38,18 @@
       }
       /* 縦長カード用追加CSS */
       .vertical-card-section {
-        padding: 3rem 0;
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        gap: 2rem;
         flex-wrap: wrap;
+        opacity: 0;
+        transform: translateY(60px);
+        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+          transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .vertical-card-section.vertical-card-section-visible {
+        opacity: 1;
+        transform: translateY(0);
       }
       .vertical-card {
         background: #fff;
@@ -51,18 +62,9 @@
         flex-direction: column;
         align-items: center;
         margin: 0;
-        animation: fadeUp 0.8s ease forwards;
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      .vertical-card:nth-child(1) {
-        animation-delay: 1s;
-      }
-      .vertical-card:nth-child(2) {
-        animation-delay: 1.2s;
-      }
-      .vertical-card:nth-child(3) {
-        animation-delay: 1.4s;
+        /* animation: fadeUp 0.8s ease forwards; 削除 */
+        opacity: 1;
+        transform: none;
       }
       .vertical-card img {
         width: 100%;
@@ -83,16 +85,26 @@
         font-size: 1.4rem;
         color: #005bac;
         text-align: center;
+        font-family: inherit;
       }
       .vertical-card-content p {
         font-size: 1rem;
         color: #333;
         text-align: center;
+        font-family: inherit;
       }
       /* ブログ・コラムカード用CSS */
-      .blog-section {
-        padding: 3rem 0;
-        background: #f8fafc;
+      .blog-section,
+      .blog-card-list {
+        opacity: 0;
+        transform: translateY(60px);
+        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+          transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .blog-section.blog-section-visible,
+      .blog-card-list.blog-card-list-visible {
+        opacity: 1;
+        transform: translateY(0);
       }
       .blog-title {
         font-size: 1.6rem;
@@ -100,6 +112,7 @@
         color: #005bac;
         margin-bottom: 2rem;
         text-align: center;
+        font-family: inherit;
       }
       .blog-card-list {
         display: flex;
@@ -109,7 +122,7 @@
       }
       .blog-card {
         width: 340px;
-        height: 300px;
+        height: 320px;
         background: #fff;
         border-radius: 16px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -117,6 +130,7 @@
         display: flex;
         flex-direction: column;
         transition: box-shadow 0.2s;
+        font-family: inherit;
       }
       .blog-card:hover {
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
@@ -145,6 +159,7 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
+        font-family: inherit;
       }
       .blog-card-meta {
         display: flex;
@@ -153,6 +168,7 @@
         margin-top: 0.8rem;
         margin-bottom: 0.3rem;
         gap: 0.7rem;
+        font-family: inherit;
       }
       .blog-card-tag {
         display: inline-block;
@@ -163,10 +179,12 @@
         padding: 0.2em 1em;
         font-weight: 600;
         margin-right: 0.5em;
+        font-family: inherit;
       }
       .blog-card-date {
         font-size: 0.92rem;
         color: #888;
+        font-family: inherit;
       }
       .blog-card-desc {
         font-size: 1rem;
@@ -178,6 +196,7 @@
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
+        font-family: inherit;
       }
       @media (max-width: 1100px) {
         .vertical-card-section {
@@ -245,54 +264,70 @@
       .performance {
         background: #fff5e5;
         padding: 4rem 0 4rem 0;
+        opacity: 0;
+        transform: translateY(60px);
+        transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+          transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: inherit;
+      }
+      .performance.performance-visible {
+        opacity: 1;
+        transform: translateY(0);
       }
       .performance-inner {
         display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        justify-content: center;
+        flex-direction: column; /* ここを縦並びに変更 */
+        align-items: center;
         gap: 3rem;
         max-width: 1200px;
         margin: 0 auto;
+        font-family: inherit;
       }
       .performance-text {
-        flex: 1 1 350px;
+        flex: none;
         min-width: 320px;
-        max-width: 500px;
+        max-width: 700px;
+        width: 100%;
+        font-family: inherit;
       }
       .performance-image {
-        flex: 1 1 320px;
+        flex: none;
         min-width: 260px;
-        max-width: 400px;
+        max-width: 700px;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-family: inherit;
       }
       .performance-image img {
         width: 100%;
         border-radius: 16px;
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
       }
-      /* スタッフ紹介をperformance内で横並びに */
       .performance-staff {
-        flex: 1 1 350px;
+        flex: none;
         min-width: 320px;
-        max-width: 500px;
+        max-width: 700px;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         margin-top: 2.5rem;
+        font-family: inherit;
       }
       .performance-staff h2 {
         font-size: 1.5rem;
         color: #005bac;
         margin-bottom: 1.2rem;
         font-weight: bold;
+        font-family: inherit;
       }
       .staff-cards {
         display: flex;
         gap: 1.5rem;
         margin-bottom: 1.2rem;
+        font-family: inherit;
       }
       .staff-card img {
         width: 90px;
@@ -307,15 +342,17 @@
         color: #e08a00;
         margin-bottom: 0.5rem;
         font-weight: bold;
+        font-family: inherit;
       }
       .staff-text p {
         font-size: 1rem;
         color: #333;
         margin-bottom: 0.7rem;
+        font-family: inherit;
       }
       .btn-primary {
         display: inline-block;
-        background: #005bac;
+        background: #8eceda;
         color: #fff;
         padding: 0.7em 2em;
         border-radius: 24px;
@@ -324,9 +361,10 @@
         font-size: 1rem;
         margin-top: 1rem;
         transition: background 0.2s;
+        font-family: inherit;
       }
       .btn-primary:hover {
-        background: #003e7e;
+        background: #7abccd;
       }
       @media (max-width: 1100px) {
         .performance-inner {
@@ -358,13 +396,50 @@
           justify-content: center;
         }
       }
+      /* Google Map帯用スタイル */
+      .map-band {
+        width: 100vw;
+        max-width: 100%;
+        height: 500px;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        background: #eee;
+        z-index: 1;
+        font-family: inherit;
+      }
+      .map-band iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+      }
+      @media (max-width: 700px) {
+        .map-band {
+          height: 220px;
+        }
+      }
+      /* 追加: 全体の明朝体指定 */
+      *,
+      *::before,
+      *::after {
+        font-family: "ヒラギノ明朝 ProN", "Hiragino Mincho ProN", "游明朝",
+          "Yu Mincho", "MS P明朝", "MS PMincho", serif !important;
+      }
     </style>
   </head>
   <body>
     <header class="site-header header-visible">
-      <div class="container">
+      <div class="container" style="padding-left: 60px; padding-right: 60px">
         <div class="logo">
-          <a href="/" class="shine-target">ライフスター株式会社</a>
+          <a href="/" class="shine-target" style="font-size: 24px"
+            >株式会社ノバ</a
+          >
         </div>
         <nav class="site-nav">
           <ul>
@@ -380,59 +455,147 @@
       </div>
     </header>
 
-    <section class="hero">
-      <div class="container">
-        <h1>お客様の人生に寄り添い<br />星のようにそっと照らし続け</h1>
-        <h2>道しるべの様になります</h2>
-        <h3>あなたの街の保険屋さん</h3>
+    <section
+      class="hero"
+      style="
+        background: url('assets/mv_pc.jpg') center center/cover no-repeat;
+        margin-bottom: 70px;
+      "
+    >
+      <div
+        class="container"
+        style="background: none; display: flex; justify-content: flex-end"
+      >
+        <div
+          style="
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            color: #fff;
+            text-align: right;
+            display: inline-block;
+            align-items: flex-end;
+            font-family: 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', '游明朝',
+              'Yu Mincho', 'MS P明朝', 'MS PMincho', serif !important;
+          "
+        >
+          <h1
+            style="
+              writing-mode: vertical-rl;
+              text-orientation: mixed;
+              color: #fff;
+              font-size: 2rem;
+              margin-bottom: 1rem;
+              font-weight: bold;
+              text-align: right;
+              font-family: inherit;
+            "
+          >
+            お客様の人生に寄り添い<br />星のようにそっと照らし続け
+          </h1>
+          <h2
+            style="
+              writing-mode: vertical-rl;
+              text-orientation: mixed;
+              color: #fff;
+              font-size: 1.5rem;
+              margin-bottom: 0.5rem;
+              text-align: right;
+              font-family: inherit;
+            "
+          >
+            道しるべの様になります
+          </h2>
+          <h3
+            style="
+              writing-mode: vertical-rl;
+              text-orientation: mixed;
+              color: #fff;
+              font-size: 1.25rem;
+              text-align: right;
+              font-family: inherit;
+            "
+          >
+            あなたの街の保険屋さん
+          </h3>
+        </div>
       </div>
     </section>
 
     <!-- 「あなたの街の保険屋さん」カード（3つ並列表示） -->
-    <section class="vertical-card-section">
-      <div class="vertical-card">
-        <img src="images/town-insurance.jpg" alt="あなたの街の保険屋さん" />
-        <div class="vertical-card-content">
-          <h3>あなたの街の保険屋さん</h3>
-          <p>
-            地域密着の保険ショップとして、<br />
-            あなたの暮らしに合った最適なプランをご提案します。<br />
-            ご相談は無料ですので、お気軽にご来店・お問い合わせください。
-          </p>
-        </div>
+    <section
+      style="
+        background: url('assets/img_top_bg.jpg') center center/cover no-repeat;
+        height: 580px;
+        margin-bottom: 100px;
+        font-family: 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', '游明朝',
+          'Yu Mincho', 'MS P明朝', 'MS PMincho', serif !important;
+      "
+    >
+      <div style="text-align: center">
+        <img
+          src="assets/icon_01.png"
+          width="60"
+          height="60"
+          style="width: 60px; height: 60px"
+        />
       </div>
-      <div class="vertical-card">
-        <img src="images/town-insurance2.jpg" alt="地域の安心サポート" />
-        <div class="vertical-card-content">
-          <h3>地域の安心サポート</h3>
-          <p>
-            地元の皆さまに寄り添い、<br />
-            保険だけでなく生活全般のご相談も承ります。<br />
-            どんな小さなことでもお気軽にご相談ください。
-          </p>
-        </div>
-      </div>
-      <div class="vertical-card">
-        <img src="images/town-insurance3.jpg" alt="経験豊富なスタッフ" />
-        <div class="vertical-card-content">
-          <h3>経験豊富なスタッフ</h3>
-          <p>
-            経験豊富なスタッフが丁寧に対応。<br />
-            お客様一人ひとりに最適な保険選びをサポートします。<br />
-            アフターフォローも万全です。
-          </p>
-        </div>
+      <div class="blog-title">あなたの街の保険屋さん</div>
+      <div class="vertical-card-section" id="vertical-card-section">
+        <img
+          src="assets/img_top_01.png"
+          alt="あなたの街の保険屋さん"
+          width="300"
+          height="420"
+          style="width: 300px; height: 420px; transition: 0.3s"
+          onmouseover="this.src='assets/img_top_01_bg.png';"
+          onmouseout="this.src='assets/img_top_01.png';"
+        />
+        <img
+          src="assets/img_top_02.png"
+          alt="地域の安心サポート"
+          width="300"
+          height="420"
+          style="width: 300px; height: 420px"
+          onmouseover="this.src='assets/img_top_02_bg.png';"
+          onmouseout="this.src='assets/img_top_02.png';"
+        />
+        <img
+          src="assets/img_top_03.png"
+          alt="経験豊富なスタッフ"
+          width="300"
+          height="420"
+          style="width: 300px; height: 420px"
+          onmouseover="this.src='assets/img_top_03_bg.png';"
+          onmouseout="this.src='assets/img_top_03.png';"
+        />
       </div>
     </section>
 
     <!-- ブログ・コラムエリア -->
-    <section class="blog-section">
+    <section
+      style="
+        margin-bottom: 100px;
+        font-family: 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', '游明朝',
+          'Yu Mincho', 'MS P明朝', 'MS PMincho', serif !important;
+      "
+    >
+      <div style="text-align: center">
+        <img
+          src="assets/icon_01.png"
+          width="60"
+          height="60"
+          style="width: 60px; height: 60px"
+        />
+      </div>
       <div class="container">
         <div class="blog-title">ブログ・コラム</div>
-        <div class="blog-card-list">
+        <div class="blog-card-list" id="blog-card-list">
           <div class="blog-card">
             <div class="blog-card-image-area">
-              <img src="images/blog1.jpg" alt="保険の見直しポイント" />
+              <img
+                src="assets/line_54050764839037-720x450.jpg"
+                alt="保険の見直しポイント"
+              />
             </div>
             <div class="blog-card-content">
               <div class="blog-card-meta">
@@ -446,7 +609,10 @@
           </div>
           <div class="blog-card">
             <div class="blog-card-image-area">
-              <img src="images/blog2.jpg" alt="相続の基礎知識" />
+              <img
+                src="assets/line_429007208947122-720x450.jpg"
+                alt="相続の基礎知識"
+              />
             </div>
             <div class="blog-card-content">
               <div class="blog-card-meta">
@@ -460,7 +626,10 @@
           </div>
           <div class="blog-card">
             <div class="blog-card-image-area">
-              <img src="images/blog3.jpg" alt="地域イベントレポート" />
+              <img
+                src="assets/PXL_20210403_101935212.NIGHT_-720x450.jpg"
+                alt="地域イベントレポート"
+              />
             </div>
             <div class="blog-card-content">
               <div class="blog-card-meta">
@@ -477,78 +646,296 @@
     </section>
 
     <!-- 実績＋スタッフ紹介セクション（肌色背景） -->
-    <section class="performance">
-      <div class="container performance-inner">
-        <div class="performance-text">
-          <h2>700世帯以上 2009年からの実績</h2>
-          <p>
-            保険の選択が難しくて、種類が多すぎて迷われることがあります。私たちはそれを理解し、わかりやすく説明し、あなたのライフスタイルに合った提案を心掛けています。相続相談や住宅ローン、ライフプラン、資産運用に関するアドバイスも行っています。
-          </p>
-          <p>
-            使ってみた時に思っていたと違っていたということもよくありますが、一緒に確認して、あなたやご家族のお役に立つ安心な内容を作りましょう。ご自身の資産を守るための情報提供も行っています。お気軽にご相談ください。
-          </p>
-          <a href="#" class="btn-primary">ごあいさつ</a>
+    <section
+      class="performance"
+      style="
+        margin-bottom: 50px;
+        font-family: 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', '游明朝',
+          'Yu Mincho', 'MS P明朝', 'MS PMincho', serif !important;
+      "
+    >
+      <div style="text-align: center">
+        <img
+          src="assets/icon_01.png"
+          width="60"
+          height="60"
+          style="width: 50px; height: 60px"
+        />
+      </div>
+      <div
+        class="container performance-inner"
+        style="margin-bottom: 40px; padding-left: 60px; padding-right: 60px"
+      >
+        <h2>700世帯以上 2009年からの実績</h2>
+        <div style="display: flex">
+          <div style="font-weight: 300">
+            <p style="margin-bottom: 30px">
+              保険の選択が難しくて、種類が多すぎて迷われることがあります。私たちはそれを理解し、わかりやすく説明し、あなたのライフスタイルに合った提案を心掛けています。
+            </p>
+            <p style="margin-bottom: 30px">
+              相続相談や住宅ローン、ライフプラン、資産運用に関するアドバイスも行っています。
+            </p>
+            <p>
+              使ってみた時に思っていたと違っていたということもよくありますが、一緒に確認して、あなたやご家族のお役に立つ安心な内容を作りましょう。ご自身の資産を守るための情報提供も行っています。お気軽にご相談ください。
+            </p>
+          </div>
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              flex-direction: column;
+            "
+          >
+            <img
+              src="assets/img_top_04.png"
+              alt="実績イメージ"
+              width="200"
+              height="200"
+              style="width: 200px; height: 200px"
+            />
+            <a href="#" class="btn-primary">ごあいさつ</a>
+          </div>
         </div>
-        <div class="performance-image">
-          <img src="images/performance.jpg" alt="実績イメージ" />
-        </div>
-        <div class="performance-staff">
+      </div>
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          padding-left: 60px;
+          padding-right: 60px;
+        "
+      >
+        <div
+          style="
+            margin-right: 60px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+          "
+        >
           <h2>スタッフ紹介</h2>
-          <div class="staff-cards">
-            <div class="staff-card">
-              <img src="images/staff1.png" alt="スタッフ1" />
-            </div>
-            <div class="staff-card">
-              <img src="images/staff2.png" alt="スタッフ2" />
-            </div>
-            <div class="staff-card">
-              <img src="images/staff3.png" alt="スタッフ3" />
-            </div>
-          </div>
-          <div class="staff-text">
-            <h3>しあわせのおてつだい</h3>
-            <p>
-              もっと輝いてほしいから、安心して暮らせる資産形成を一緒にしましょう。
-            </p>
-            <a href="#" class="btn-primary">詳しくはこちら</a>
-          </div>
+          <a href="#" class="btn-primary">詳しくはこちら</a>
+        </div>
+        <img
+          src="assets/img_top_05.png"
+          alt="スタッフ1"
+          width="377"
+          height="169"
+          style="width: 377px; height: 169px; margin-right: 20px"
+        />
+        <div style="display: flex; align-items: center; flex-direction: column">
+          <p>
+            「しあわせの おてつだい」<br />
+            もっと輝いてほしいから、
+          </p>
+          <p>
+            安心して暮らせる資産形成を<br />
+            一緒にしましょう。
+          </p>
         </div>
       </div>
     </section>
 
-    <!-- カードセクション（保険屋さんカード） -->
-    <section class="card-section">
-      <div class="container">
-        <div class="card town-card">
-          <img src="images/town-insurance.jpg" alt="あなたの街の保険屋さん" />
-          <div class="card-content">
-            <h3>あなたの街の保険屋さん</h3>
-            <p>
-              地域密着の保険ショップとして、あなたの暮らしに合った最適なプランをご提案します。
-            </p>
-          </div>
-        </div>
+    <section
+      class="information"
+      style="
+        margin-bottom: 70px;
+        font-family: 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', '游明朝',
+          'Yu Mincho', 'MS P明朝', 'MS PMincho', serif !important;
+      "
+    >
+      <!-- アイコン -->
+      <div class="information__icon">
+        <!-- ここにSVGやPNGなどを置く -->
+        <img src="assets/icon_01.png" alt="sparkle icon" />
+      </div>
+
+      <!-- タイトル -->
+      <h2 class="information__title">インフォメーション</h2>
+
+      <style>
+        .information__item:hover {
+          background-color: #f0f0f0;
+          transition: background-color 0.2s;
+        }
+        .btn {
+          display: inline-block;
+          padding: 14px 48px;
+          background-color: #8eceda;
+          color: #fff;
+          border-radius: 40px;
+          text-decoration: none;
+          font-size: 18px;
+          transition: background-color 0.2s;
+          font-family: "ヒラギノ明朝 ProN", "Hiragino Mincho ProN", "游明朝",
+            "Yu Mincho", "MS P明朝", "MS PMincho", serif !important;
+        }
+        .btn:hover {
+          background-color: #7abccd;
+        }
+      </style>
+      <!-- リスト -->
+      <ul class="information__list">
+        <li class="information__item">
+          <time datetime="2021-01-16">2021.01.16</time>
+          <p>
+            【延期となりました】2021年2月21日(日)開催
+            ベビグラファー藤井先生によるベビーフォト撮影会＆…
+          </p>
+        </li>
+        <li class="information__item">
+          <time datetime="2021-01-07">2021.01.07</time>
+          <p>【終了】2021年1月16日(土)開催　住宅ローンセミナーご予約受付中</p>
+        </li>
+        <li class="information__item">
+          <time datetime="2020-05-05">2020.05.05</time>
+          <p>コロナウイルスについてのご対応とお知らせ</p>
+        </li>
+        <li class="information__item">
+          <time datetime="2019-07-23">2019.07.23</time>
+          <p>8月3日(土)キッズマネースクール開催</p>
+        </li>
+      </ul>
+      <!-- ボタン -->
+      <div class="information__more">
+        <a href="#" class="btn">一覧はこちら</a>
       </div>
     </section>
 
-    <footer class="site-footer">
+    <!-- Google Map 帯 -->
+    <div
+      class="map-band"
+      style="
+        font-family: 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', '游明朝',
+          'Yu Mincho', 'MS P明朝', 'MS PMincho', serif !important;
+      "
+    >
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3282.393964479836!2d134.6542323152337!3d34.85732608039309!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3554e9e2e2e2e2e3%3A0x2e2e2e2e2e2e2e2e!2z44CSNjcwLTAwNzQg5YW15bqr55yM5bqD5bO255yM5a6u5bO255S677yR77yR77yR!5e0!3m2!1sja!2sjp!4v1717570000000!5m2!1sja!2sjp"
+        width="100%"
+        height="300"
+        style="border: 0"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Google Map"
+      ></iframe>
+    </div>
+
+    <section
+      class="hero"
+      style="
+        background: url('assets/bg.jpg') center center/cover no-repeat;
+        height: 440px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', '游明朝',
+          'Yu Mincho', 'MS P明朝', 'MS PMincho', serif !important;
+      "
+    >
+      <h2
+        style="
+          margin-bottom: 40px;
+          font-weight: 400;
+          text-align: center;
+          font-family: inherit;
+          font-size: 36px;
+        "
+      >
+        お気軽にご相談ください
+      </h2>
+      <p
+        style="
+          margin-bottom: 8px;
+          font-weight: 400;
+          text-align: center;
+          font-family: inherit;
+        "
+      >
+        ご予約のご連絡はお電話からお受付　TEL : 0120-81-3515
+      </p>
+      <p
+        style="
+          margin-bottom: 8px;
+          font-weight: 400;
+          text-align: center;
+          font-family: inherit;
+        "
+      >
+        または下記ボタンよりお問い合わせフォームからお受付しております。
+      </p>
+      <p
+        style="
+          margin-bottom: 24px;
+          font-weight: 400;
+          text-align: center;
+          font-family: inherit;
+        "
+      >
+        オンラインでのご相談も可能です
+      </p>
+
+      <div class="information__more">
+        <a href="#" class="btn">一覧はこちら</a>
+      </div>
+    </section>
+
+    <footer
+      style="
+        background-color: #fbf9ef;
+        font-family: 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', '游明朝',
+          'Yu Mincho', 'MS P明朝', 'MS PMincho', serif !important;
+      "
+    >
       <div class="container">
         <nav class="footer-nav">
           <!-- フッターリンク省略 -->
         </nav>
-        <div class="footer-info">
-          <p>ライフスター株式会社</p>
-          <p>〒670-0074 兵庫県姫路市御立西２丁目７−４</p>
-          <p>TEL : 0120-81-3515</p>
-        </div>
+
         <div class="social">
-          <a href="#"><img src="images/facebook-icon.png" alt="Facebook" /></a>
           <a href="#"
-            ><img src="images/instagram-icon.png" alt="Instagram"
+            ><img
+              src="assets/foot_facebook.png"
+              alt="Facebook"
+              width="225"
+              height="70"
+              style="width: 225px; height: 70px"
+          /></a>
+          <a href="#"
+            ><img
+              src="assets/foot_insta.png"
+              alt="Instagram"
+              width="225"
+              height="70"
+              style="width: 225px; height: 70px"
           /></a>
         </div>
-        <div class="copyright">
-          <p>&copy; ライフスター株式会社</p>
+        <p
+          style="
+            color: #666666;
+            font-size: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: inherit;
+          "
+        >
+          岡山県岡山市北区富田町２丁目２−４ ＮＯＶＡ ＣＯＬ’ 0120-848-618
+        </p>
+        <div
+          class="copyright"
+          style="
+            background-color: #3b82f680;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            font-family: inherit;
+          "
+        >
+          <p style="margin: 0; color: #fff; font-family: inherit">
+            &copy;　株式会社ノバ
+          </p>
         </div>
       </div>
     </footer>
@@ -588,10 +975,62 @@
         ticking = false;
       }
 
+      // スクロール時のフィードイン制御
+      function handleFeedIn() {
+        // 「あなたの街の保険屋さん」カード
+        const verticalCardSection = document.getElementById(
+          "vertical-card-section"
+        );
+        if (verticalCardSection) {
+          const rect = verticalCardSection.getBoundingClientRect();
+          const windowHeight =
+            window.innerHeight || document.documentElement.clientHeight;
+          if (rect.top < windowHeight - 80) {
+            verticalCardSection.classList.add("vertical-card-section-visible");
+          }
+        }
+        // ブログ・コラムカード
+        const blogCardList = document.getElementById("blog-card-list");
+        if (blogCardList) {
+          const rect = blogCardList.getBoundingClientRect();
+          const windowHeight =
+            window.innerHeight || document.documentElement.clientHeight;
+          if (rect.top < windowHeight - 80) {
+            blogCardList.classList.add("blog-card-list-visible");
+          }
+        }
+        // ブログ・コラム下のperformanceセクションのフィードイン
+        const perf = document.querySelector(".performance");
+        if (perf) {
+          const rect = perf.getBoundingClientRect();
+          const windowHeight =
+            window.innerHeight || document.documentElement.clientHeight;
+          if (rect.top < windowHeight - 80) {
+            perf.classList.add("performance-visible");
+          }
+        }
+      }
+
       window.addEventListener("scroll", function () {
         if (!ticking) {
           window.requestAnimationFrame(onScroll);
+          window.requestAnimationFrame(handleFeedIn);
           ticking = true;
+        }
+      });
+
+      // 初回ロード時にもチェック
+      window.addEventListener("DOMContentLoaded", function () {
+        handleFeedIn();
+        // performanceセクションも初回チェック
+        const perf = document.querySelector(".performance");
+        if (perf) {
+          const rect = perf.getBoundingClientRect();
+          const windowHeight =
+            window.innerHeight || document.documentElement.clientHeight;
+          if (rect.top < windowHeight - 80) {
+            perf.classList.add("performance-visible");
+          }
         }
       });
     </script>
